@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { AtualizarAutorDto, CriarAutorDto } from './autores.dto';
+
 import { identity } from 'rxjs';
 
 let autores = [
@@ -26,22 +32,53 @@ export class AutoresService {
     }
     //console.log("listarService");
     //API sempre retorna json
+    return autores;
   }
   listarAutor(id: number) {
     const autorEncontrado = autores.find((autor) => autor.id === id);
 
     if (!autorEncontrado) {
+      //método de retorno do nest
+      throw new NotFoundException('Autor não encontrado');
+      //return 'Autor não encontrado.';
+    }
+
+    return autorEncontrado;
+  }
+  criarAutor(bodyRequest: CriarAutorDto) {
+    if (!bodyRequest.nome || !bodyRequest.email) {
+      return 'Nome e email são obrigatórios.';
+    }
+    autores.push({
+      id: autores.length + 1,
+      nome: bodyRequest.nome,
+      email: bodyRequest.email,
+    });
+
+    return autores;
+  }
+
+  atualizarAutor(idAutor: number, bodyRequest: AtualizarAutorDto) {
+    //const autorEncontrado = autores.find((autor) => autor.id === idAutor);
+    const autorEncontrado = this.listarAutor(idAutor);
+
+    /*chamando o método listarAutor, economizando as próximas 3 linhas de código
+
+    if (!autorEncontrado) {
       return 'Autor não encontrado.';
+    }*/
+
+    if (!bodyRequest.nome && !bodyRequest.email) {
+      throw new BadRequestException('Nome ou email é obrigatório.');
+    }
+
+    if (bodyRequest.nome) {
+      autorEncontrado.nome = bodyRequest.nome;
+    }
+    if (bodyRequest.email) {
+      autorEncontrado.email = bodyRequest.email;
     }
 
     return autorEncontrado;
   }
 }
-/*import { Injectable } from "@nestjs/common";
-
-@Injectable()
-export class AutoresService {
-    listarAutores() {
-        return "Listagem de autores";
-    }
-}*/
