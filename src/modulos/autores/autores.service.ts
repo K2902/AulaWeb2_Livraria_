@@ -34,17 +34,66 @@ export class AutoresService {
     //API sempre retorna json
     return autores;
   }
+
+  listarAutor(id: number) {
+    const autorEncontrado = autores.find((autor) => autor.id === id);
+    if (!autorEncontrado) throw new NotFoundException('Autor não encontrado');
+
+    return autorEncontrado;
+  }
+
+  /*
+
+  listarAutor(id: number) {
+    const autorEncontrado = autores.find((autor) => autor.id === id);
+    if (!autorEncontrado) throw new NotFoundException('Autor não encontrado.');
+
+    return autorEncontrado;
+  }
+
+  /*
+
+  listarAutor(){
+    const autorEncontrado = autores.find((autor) => autor.id === id);
+    if (!autorEncontrado){
+      throw new NotFoundException('Autor não encontrado');
+    }
+    return autorEncontrado;
+  }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /*
+  listarAutor(id: number) {
+    const autorEncontrado = autores.find((autor) => autor.id === id);
+    if (!autorEncontrado) {
+      throw new NotFoundException('Autor não encontrado');
+    }
+    return autorEncontrado;
+  }
+  /*
   listarAutor(id: number) {
     const autorEncontrado = autores.find((autor) => autor.id === id);
 
     if (!autorEncontrado) {
       //método de retorno do nest
       throw new NotFoundException('Autor não encontrado');
+      //escrever no NotFoundException() a mensagem que deseja exibir
       //return 'Autor não encontrado.';
     }
 
     return autorEncontrado;
   }
+*/
   criarAutor(bodyRequest: CriarAutorDto) {
     if (!bodyRequest.nome || !bodyRequest.email) {
       return 'Nome e email são obrigatórios.';
@@ -80,5 +129,15 @@ export class AutoresService {
     }
 
     return autorEncontrado;
+  }
+  deletarAutor(idAutor: number) {
+    // utiliza o this para referenciar a própria classe dele(AutoresService)
+    // os metódos pertencem ao AutoresService
+    // dentro do parênteses é o parâmetro
+    this.listarAutor(idAutor);
+
+    autores = autores.filter((autor) => autor.id !== idAutor);
+
+    return autores;
   }
 }
