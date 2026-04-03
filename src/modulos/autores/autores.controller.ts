@@ -14,7 +14,7 @@ import { AtualizarAutorDto, CriarAutorDto } from './autores.dto';
 // Um controller é a porta de entrada de nossa aplicação/API
 //api trata os dados e abre como queremos, jogando para o frond-end/client
 
-//Metódos http: get, post,
+//Metódos http: get, post, put, delete, etc.
 //GET busca/consulta
 //POST posta/envia/upload
 
