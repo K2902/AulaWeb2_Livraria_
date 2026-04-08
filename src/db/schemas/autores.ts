@@ -1,10 +1,20 @@
-import { mssqlTable, int, varchar } from 'drizzle-orm/mssql-core';
-import { timestamp as mssqlTimestamp } from 'drizzle-orm/mysql-core';
+//schema é a estrutura da tabela no banco de dados
 
-export const autoresTable = mssqlTable('autores', {
+//import { sql } from 'drizzle-orm';
+import { datetime, mssqlTable, int, varchar } from 'drizzle-orm/mssql-core';
+//import { timestamp as mssqlTimestamp } from 'drizzle-orm/mysql-core';
+
+export const autoresTabela = mssqlTable('autores', {
   id: int('id').primaryKey().identity(),
-  nome: varchar({ length: 100 }).notNull(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  criadoEm: mssqlTimestamp('criado_em').notNull().defaultNow(),
-  atualizadoEm: mssqlTimestamp('atualizado_em').notNull().defaultNow(),
+  nome: varchar('nome', { length: 100 }).notNull(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  criadoEm: datetime('criado_em').notNull().defaultGetDate(),
+  atualizadoEm: datetime('atualizado_em').notNull().defaultGetDate(),
+  //criadoEm: mssqlTimestamp('criado_em').notNull().defaultNow(),
+  //atualizadoEm: mssqlTimestamp('atualizado_em').notNull().defaultNow(),
 });
+
+export type Autor = typeof autoresTabela.$inferSelect;
+//vai verificar todas as colunas da tabela autores
+export type CriarAutor = typeof autoresTabela.$inferInsert;
+//vai verificar todas as colunas da tabela autores para criar um novo autor
