@@ -3,6 +3,8 @@ import { DATABASE_URL } from './database.constants';
 import { DRIZZLE } from './database.constants';
 import { drizzle } from 'drizzle-orm/node-mssql';
 //import * as schema from '../schemas';
+import { connect } from 'mssql';
+import type { config as MsSqlConfig } from 'mssql';
 import * as schema from '../schemas/index';
 
 @Global()
@@ -15,8 +17,21 @@ import * as schema from '../schemas/index';
     {
       provide: DRIZZLE,
       inject: [],
-      useFactory: () => {
-        return drizzle(DATABASE_URL, { schema: schema });
+      useFactory: async () => {
+        const dbConfig: MsSqlConfig = {
+          server: 'SRV-BD-1',
+          port: 1433,
+          user: 'alunos_des225',
+          password: '123',
+          database: 'des225_bruno',
+          options: {
+            encrypt: false,
+            trustServerCertificate: true,
+          },
+        }; //Criando constante com as credenciais
+
+        const pool = await connect(dbConfig);
+        return drizzle({ client: pool, schema: schema });
         //importando o objeto {}
       },
     },
