@@ -30,6 +30,7 @@ import * as schema from '../schemas/index';
           },
         }; //Criando constante com as credenciais
 
+        //pool é uma conexão aberta com o banco de dados
         const pool = await connect(dbConfig);
         return drizzle({ client: pool, schema: schema });
         //importando o objeto {}

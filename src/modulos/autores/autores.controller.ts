@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
   Param,
   ParseIntPipe,
   Post,
@@ -43,10 +44,21 @@ export class AutoresController {
   constructor(private readonly autoresService: AutoresService) {}
 
   @Get('/listar-autores')
+  async listarAutores() {
+    try {
+      //console.log("listarController");
+      return await this.autoresService.listarAutores();
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao listar autores');
+    }
+  }
+  /*
+  @Get('/listar-autores')
   listarAutores() {
     //console.log("listarController");
     return this.autoresService.listarAutores();
   }
+  */
 
   @Get('/listar-autor/')
   listarAutor(@Param('id', ParseIntPipe) id: number) {

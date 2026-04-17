@@ -6,6 +6,7 @@ import {
 import { AtualizarAutorDto, CriarAutorDto } from './autores.dto';
 
 import { identity } from 'rxjs';
+import { AutoresRepository } from './autores.repository';
 
 let autores = [
   {
@@ -26,6 +27,12 @@ let autores = [
 ];
 @Injectable()
 export class AutoresService {
+  constructor(private readonly autoresRepository: AutoresRepository) {}
+
+  async listarAutores() {
+    return await this.autoresRepository.listarAutores();
+  }
+  /*
   listarAutores() {
     if (!autores) {
       return 'Não há autores cadastrados';
@@ -34,6 +41,7 @@ export class AutoresService {
     //API sempre retorna json
     return autores;
   }
+  */
 
   listarAutor(id: number) {
     const autorEncontrado = autores.find((autor) => autor.id === id);

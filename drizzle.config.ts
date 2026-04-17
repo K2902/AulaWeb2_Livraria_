@@ -1,4 +1,5 @@
 //Aqui é o arquivo de configuração para as migrations
+//Migration é o versionamento do código
 import { defineConfig } from 'drizzle-kit';
 import { DATABASE_URL } from './src/db/database/database.constants';
 export default defineConfig({
