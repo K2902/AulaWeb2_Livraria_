@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { AutoresService } from './autores.service';
 import { AtualizarAutorDto, CriarAutorDto } from './autores.dto';
+import { autoresTabela } from 'src/db/schemas';
+import { eq } from 'drizzle-orm';
 
 // Um controller é a porta de entrada de nossa aplicação/API
 //api trata os dados e abre como queremos, jogando para o frond-end/client
@@ -52,59 +54,32 @@ export class AutoresController {
       throw new InternalServerErrorException('Erro ao listar autores');
     }
   }
-  /*
-  @Get('/listar-autores')
-  listarAutores() {
-    //console.log("listarController");
-    return this.autoresService.listarAutores();
-  }
-  */
 
-  @Get('/listar-autor/')
-  listarAutor(@Param('id', ParseIntPipe) id: number) {
-    return this.autoresService.listarAutor(id);
-  }
+  // -----métodos com array sem db-----
+  // @Get('/listar-autores')
+  // listarAutores() {
+  //   //console.log("listarController");
+  //   return this.autoresService.listarAutores();
+  // }
 
-  /*
-  
-  
-  
-  @Get('/listar-autor/:id')
-  listarAutor(@Param('id', ParseIntPipe)id : number){
-    return this.autoresService.listarAutor(id);
-  }
-
-
-
-
-
-
-  /*
   @Get('/listar-autor/:id')
   listarAutor(@Param('id', ParseIntPipe) id: number) {
     return this.autoresService.listarAutor(id);
   }
-
-  /*
-  @Get('/listar-autor/:id')
-  listarAutor(@Param('id', ParseIntPipe) id: number) {
-    return this.autoresService.listarAutor(id);
-  }
-  */
 
   @Post('/criar-autor')
   criarAutor(@Body() bodyRequest: CriarAutorDto) {
     return this.autoresService.criarAutor(bodyRequest);
   }
 
-  @Put('/atualizar-autor/:id')
-  atualizarAutor(
-    @Param('id', ParseIntPipe /*transforma em inteiro*/) idAutor: number,
-    @Body() bodyRequest: AtualizarAutorDto,
-  ) {
-    //return 'Autor atualizado com sucesso';
-    return this.autoresService.atualizarAutor(idAutor, bodyRequest);
-  }
+  // @Put('/atualizar-autor/:id')
+  // atualizarAutor(
+  //   @Param('id', ParseIntPipe /*transforma em inteiro*/) idAutor: number,
+  //   @Body() bodyRequest: AtualizarAutorDto,
+  // ) {
+  //   //return 'Autor atualizado com sucesso';
+  //   return this.autoresService.atualizarAutor(idAutor, bodyRequest);
+  // }
 
   @Delete('/deletar-autor/:id')
   // ParseIntPipe transforma o id string em número

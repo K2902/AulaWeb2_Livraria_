@@ -1,7 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/db/database/database.constants';
 import { autoresTabela } from 'src/db/schemas';
 import type { DrizzleDB } from 'src/db/types/drizzleDB';
+import { CriarAutorDto } from './autores.dto';
 
 @Injectable()
 export class AutoresRepository {
@@ -9,5 +15,28 @@ export class AutoresRepository {
 
   async listarAutores() {
     return this.db.select().from(autoresTabela);
+  }
+
+  async listarAutor(id: number) {
+    try {
+      return await await this.db
+        .select()
+        .from(autoresTabela)
+        .where(eq(autoresTabela.id, id));
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao listar um autor');
+    }
+  }
+  async criarAutor(bodyRequest: CriarAutorDto) {
+    try {
+      await this.db.insert(autoresTabela).values(bodyRequest);
+      const autorCriado = await this.db
+        .select()
+        .from(autoresTabela)
+        .where(eq(autoresTabela.email, bodyRequest.email));
+      return autorCriado;
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao criar autor.');
+    }
   }
 }
