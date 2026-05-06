@@ -27,9 +27,6 @@ let autores = [
 ];
 @Injectable()
 export class AutoresService {
-  atualizarAutor(idAutor: number, bodyRequest: AtualizarAutorDto) {
-    throw new Error('Method not implemented.');
-  }
   constructor(private readonly autoresRepository: AutoresRepository) {}
 
   async listarAutores() {
@@ -39,13 +36,19 @@ export class AutoresService {
   async listarAutor(id: number) {
     const autorEncontrado = await this.autoresRepository.listarAutor(id);
     //if (!autorEncontrado) <-- desta forma ele mostra um array vazio
-    if (autorEncontrado.length === 0) {
+    if (!autorEncontrado) {
       throw new NotFoundException(`Autor com id ${id} não encontrado.`);
     }
     return autorEncontrado;
   }
   criarAutor(bodyRequest: CriarAutorDto) {
     return this.autoresRepository.criarAutor(bodyRequest);
+  }
+
+  async atualizarAutor(idAutor: number, bodyRequest: AtualizarAutorDto) {
+    await this.listarAutor(idAutor);
+
+    return this.autoresRepository.atualizarAutor(idAutor, bodyRequest);
   }
 
   /*----------MÉTODOS USANDO ARRAY SEM DB------------------

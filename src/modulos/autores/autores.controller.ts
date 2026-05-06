@@ -72,14 +72,14 @@ export class AutoresController {
     return this.autoresService.criarAutor(bodyRequest);
   }
 
-  // @Put('/atualizar-autor/:id')
-  // atualizarAutor(
-  //   @Param('id', ParseIntPipe /*transforma em inteiro*/) idAutor: number,
-  //   @Body() bodyRequest: AtualizarAutorDto,
-  // ) {
-  //   //return 'Autor atualizado com sucesso';
-  //   return this.autoresService.atualizarAutor(idAutor, bodyRequest);
-  // }
+  @Put('/atualizar-autor/:id')
+  atualizarAutor(
+    @Param('id', ParseIntPipe /*transforma em inteiro*/) idAutor: number,
+    @Body() bodyRequest: AtualizarAutorDto,
+  ) {
+    //return 'Autor atualizado com sucesso';
+    return this.autoresService.atualizarAutor(idAutor, bodyRequest);
+  }
 
   @Delete('/deletar-autor/:id')
   // ParseIntPipe transforma o id string em número

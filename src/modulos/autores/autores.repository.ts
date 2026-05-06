@@ -19,10 +19,11 @@ export class AutoresRepository {
 
   async listarAutor(id: number) {
     try {
-      return await await this.db
+      const autorEncontrado = await this.db
         .select()
         .from(autoresTabela)
         .where(eq(autoresTabela.id, id));
+      return autorEncontrado[0];
     } catch (error) {
       throw new InternalServerErrorException('Erro ao listar um autor');
     }
@@ -46,6 +47,9 @@ export class AutoresRepository {
         .update(autoresTabela)
         .set(bodyRequest)
         .where(eq(autoresTabela.id, id));
-    } catch (error) {}
+      return `Autor atualizado com sucesso: ${autorAtualizado}`;
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao atualizar autor.');
+    }
   }
 }
