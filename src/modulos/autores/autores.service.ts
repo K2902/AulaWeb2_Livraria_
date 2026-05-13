@@ -51,6 +51,11 @@ export class AutoresService {
     return this.autoresRepository.atualizarAutor(idAutor, bodyRequest);
   }
 
+  async deletarAutor(idAutor: number) {
+    await this.listarAutor(idAutor);
+    return this.autoresRepository.deletarAutor(idAutor);
+  }
+
   /*----------MÉTODOS USANDO ARRAY SEM DB------------------
   listarAutores() {
     if (!autores) {
@@ -79,9 +84,8 @@ export class AutoresService {
     });
     return autores;
   }
-  */
 
-  /*
+  ----------MÉTODOS USANDO ARRAY SEM DB------------------
   atualizarAutor(idAutor: number, bodyRequest: AtualizarAutorDto) {
     //const autorEncontrado = autores.find((autor) => autor.id === idAutor);
     const autorEncontrado = this.listarAutor(idAutor);
@@ -105,7 +109,7 @@ export class AutoresService {
 
     return autorEncontrado;
   }
-    */
+  
   deletarAutor(idAutor: number) {
     // utiliza o this para referenciar a própria classe dele(AutoresService)
     // os metódos pertencem ao AutoresService
@@ -116,4 +120,13 @@ export class AutoresService {
 
     return autores;
   }
+  */
+
+  // async inativarAutor(id: number) {
+  //   try {
+  //     await this.db.update(autoresTabela).set({ ativo: false }).where(eq(autoresTabela.id, id));
+  //     return `Autor inativado com sucesso: ${id}`;
+  //   } catch (error) {
+  //     throw new InternalServerErrorException('Erro ao inativar autor.');
+  //   }
 }
