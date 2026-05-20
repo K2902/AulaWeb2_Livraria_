@@ -8,6 +8,7 @@ import { DRIZZLE } from 'src/db/database/database.constants';
 import { livrosTabela } from 'src/db/schemas';
 import type { DrizzleDB } from 'src/db/types/drizzleDB';
 import { AtualizarAutorDto, CriarAutorDto } from '../autores/autores.dto';
+import { AtualizarLivroDto, CriarLivroDto } from './livros.dto';
 
 @Injectable()
 export class LivrosRepository {
@@ -33,18 +34,23 @@ export class LivrosRepository {
       throw new InternalServerErrorException('Erro ao listar um livro');
     }
   }
-  //   async criarLivro(bodyRequest: CriarLivroDto) {
-  //     try {
-  //       await this.db.insert(livrosTabela).values(bodyRequest);
-  //       const livroCriado = await this.db
-  //         .select()
-  //         .from(livrosTabela)
-  //         .where(eq(autoresTabela.email, bodyRequest.email));
-  //       return livroCriado;
-  //     } catch (error) {
-  //       throw new InternalServerErrorException('Erro ao criar livro.');
-  //     }
-  //   }
+
+  async criarLivro(bodyRequest: CriarLivroDto) {
+    try {
+      await this.db.insert(livrosTabela).values({
+        idAutor: bodyRequest.id_autor,
+        titulo: bodyRequest.titulo,
+        descricao: bodyRequest.descricao,
+      });
+
+      return `Livro ${bodyRequest.titulo} criado com sucesso`;
+
+      // const livroCriado = await this.db.select().from(livrosTabela);
+      // return livroCriado;
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao criar livro.');
+    }
+  }
 
   //   async atualizarLivro(id: number, bodyRequest: AtualizarAutorDto) {
   //     try {
