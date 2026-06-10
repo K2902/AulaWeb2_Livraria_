@@ -56,6 +56,19 @@ export class LivrosRepository {
     }
   }
 
+  async listarLivroComAutor(id: number){
+    try {
+      const livroComAutor = await this.db
+      .select()
+      .from(livrosTabela)
+      .innerJoin(autoresTabela, eq(livrosTabela.idAutor, autoresTabela.id))
+      .where(eq(livrosTabela.id, id));
+      return livroComAutor[0];
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao listar livro com autor.');
+    }
+  }
+
   async criarLivro(bodyRequest: CriarLivroDto) {
     try {
        await this.db.insert(livrosTabela).values({

@@ -31,9 +31,17 @@ export class LivrosService {
     }
     return livroEncontrado;
   }
-  
+
   async listarLivrosComAutor() {
     return await this.livrosRepository.listarLivrosComAutor();
+  }
+  async listarLivroComAutor(id: number) {
+    return await this.listarLivro(id);
+    const livroComAutor = await this.livrosRepository.listarLivroComAutor(id);
+    if (!livroComAutor) {
+      throw new NotFoundException(`Livro com id ${id} não encontrado.`);
+    }
+    return livroComAutor;
   }
 
   // async atualizarLivro(idLivro: number, bodyRequest: AtualizarLivroDto) {
