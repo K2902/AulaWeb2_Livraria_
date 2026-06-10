@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { DRIZZLE } from 'src/db/database/database.constants';
-import { livrosTabela } from 'src/db/schemas';
+import { livrosTabela, autoresTabela } from 'src/db/schemas';
 import type { DrizzleDB } from 'src/db/types/drizzleDB';
 import { AtualizarAutorDto, CriarAutorDto } from '../autores/autores.dto';
 import { AtualizarLivroDto, CriarLivroDto } from './livros.dto';
@@ -35,9 +35,30 @@ export class LivrosRepository {
     }
   }
 
+  async listarLivrosComAutor(){
+    try {
+      const livrosComAutor = await this.db
+      // .select({
+      //   id: livrosTabela.id,
+      //   titulo: livrosTabela.titulo,
+      //   descricao: livrosTabela.descricao,
+      //   nomeAutor: autoresTabela.nome,
+      //   emailAutor: autoresTabela.email,
+      //   criadoEm: livrosTabela.criadoEm,
+      //   atualizadoEm: livrosTabela.atualizadoEm,
+      // })
+      .select()
+      .from(livrosTabela)
+      .innerJoin(autoresTabela, eq(livrosTabela.idAutor, autoresTabela.id));
+      return livrosComAutor;
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao listar livros com autor.');
+    }
+  }
+
   async criarLivro(bodyRequest: CriarLivroDto) {
     try {
-      await this.db.insert(livrosTabela).values({
+       await this.db.insert(livrosTabela).values({
         idAutor: bodyRequest.id_autor,
         titulo: bodyRequest.titulo,
         descricao: bodyRequest.descricao,
@@ -47,6 +68,7 @@ export class LivrosRepository {
 
       // const livroCriado = await this.db.select().from(livrosTabela);
       // return livroCriado;
+
     } catch (error) {
       throw new InternalServerErrorException('Erro ao criar livro.');
     }
@@ -64,7 +86,7 @@ export class LivrosRepository {
   //     }
   //   }
 
-  async deletarAutor(id: number) {
+  async deletarLivro(id: number) {
     try {
       await this.db.delete(livrosTabela).where(eq(livrosTabela.id, id));
       return `Livro deletado com sucesso: ${id}`;

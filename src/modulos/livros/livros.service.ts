@@ -23,26 +23,27 @@ export class LivrosService {
     return await this.livrosRepository.criarLivro(bodyRequest);
   }
 
-  // async listarLivro(id: number) {
-  //   const autorEncontrado = await this.autoresRepository.listarLivro(id);
-  //   //if (!autorEncontrado) <-- desta forma ele mostra um array vazio
-  //   if (!autorEncontrado) {
-  //     throw new NotFoundException(`Autor com id ${id} não encontrado.`);
-  //   }
-  //   return autorEncontrado;
-  // }
-  // criarAutor(bodyRequest: CriarAutorDto) {
-  //   return this.autoresRepository.criarAutor(bodyRequest);
+  async listarLivro(id: number) {
+    const livroEncontrado = await this.livrosRepository.listarLivro(id);
+    //if (!livroEncontrado) <-- desta forma ele mostra um array vazio
+    if (!livroEncontrado) {
+      throw new NotFoundException(`Livro com id ${id} não encontrado.`);
+    }
+    return livroEncontrado;
+  }
+  
+  async listarLivrosComAutor() {
+    return await this.livrosRepository.listarLivrosComAutor();
+  }
+
+  // async atualizarLivro(idLivro: number, bodyRequest: AtualizarLivroDto) {
+  //   await this.listarLivro(idLivro);
+
+  //   return this.livrosRepository.atualizarLivro(idLivro, bodyRequest);
   // }
 
-  // async atualizarAutor(idAutor: number, bodyRequest: AtualizarAutorDto) {
-  //   await this.listarAutor(idAutor);
-
-  //   return this.autoresRepository.atualizarAutor(idAutor, bodyRequest);
-  // }
-
-  // async deletarAutor(idAutor: number) {
-  //   await this.listarAutor(idAutor);
-  //   return this.autoresRepository.deletarAutor(idAutor);
-  // }
+  async deletarLivro(idLivro: number) {
+    await this.listarLivro(idLivro);
+    return this.livrosRepository.deletarLivro(idLivro);
+  }
 }
