@@ -87,17 +87,17 @@ export class LivrosRepository {
     }
   }
 
-  //   async atualizarLivro(id: number, bodyRequest: AtualizarAutorDto) {
-  //     try {
-  //       const livroAtualizado = await this.db
-  //         .update(livrosTabela)
-  //         .set(bodyRequest)
-  //         .where(eq(livrosTabela.id, id));
-  //       return `Autor atualizado com sucesso: ${livroAtualizado}`;
-  //     } catch (error) {
-  //       throw new InternalServerErrorException('Erro ao atualizar livro.');
-  //     }
-  //   }
+  async atualizarLivro(id: number, bodyRequest: AtualizarLivroDto) {
+    try {
+      const livroAtualizado = await this.db
+        .update(livrosTabela)
+        .set(bodyRequest)
+        .where(eq(livrosTabela.id, id));
+      return `Livro atualizado com sucesso: ${livroAtualizado}`;
+        } catch (error) {
+        throw new InternalServerErrorException('Erro ao atualizar livro.');
+      }
+    }
 
   async deletarLivro(id: number) {
     try {
@@ -107,4 +107,13 @@ export class LivrosRepository {
       throw new InternalServerErrorException('Erro ao deletar livro.');
     }
   }
+
+  // async inativarLivro(id: number) {
+  //   try {
+  //     await this.db.update(livrosTabela).set({ ativo: false }).where(eq(livrosTabela.id, id));
+  //     return `Livro inativado com sucesso: ${id}`;
+  //   } catch (error) {
+  //     throw new InternalServerErrorException('Erro ao inativar livro.');
+  //   }
+  // }
 }

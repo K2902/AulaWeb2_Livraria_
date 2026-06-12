@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Param, ParseIntPipe, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, ParseIntPipe, Delete, Put } from '@nestjs/common';
 import { LivrosService } from './livros.service';
-import { CriarLivroDto } from './livros.dto';
+import { AtualizarLivroDto, CriarLivroDto } from './livros.dto';
 
 @Controller('livros')
 export class LivrosController {
@@ -30,8 +30,14 @@ export class LivrosController {
     return await this.livrosService.criarLivro(bodyRequest);
   }
 
+  @Put('atualizar-livro/:id')
+  async atualizarLivro(@Param('id', ParseIntPipe)id:number, @Body() bodyRequest: AtualizarLivroDto){
+    return await this.livrosService.atualizarLivro(id, bodyRequest);
+  }
+
   @Delete('deletar-livro/:id')
   async deletarLivro(@Param('id', ParseIntPipe)id:number){
     return await this.livrosService.deletarLivro(id);
   }
+  
 }

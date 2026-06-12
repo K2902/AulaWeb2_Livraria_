@@ -38,6 +38,8 @@ export class AutoresService {
     //if (!autorEncontrado) <-- desta forma ele mostra um array vazio
     if (!autorEncontrado) {
       throw new NotFoundException(`Autor com id ${id} não encontrado.`);
+    } else if (autorEncontrado.ativo === false) {
+      throw new NotFoundException(`Autor com id ${id} está inativo.`);
     }
     return autorEncontrado;
   }
@@ -54,6 +56,11 @@ export class AutoresService {
   async deletarAutor(idAutor: number) {
     await this.listarAutor(idAutor);
     return this.autoresRepository.deletarAutor(idAutor);
+  }
+
+  async inativarAutor(id: number) {
+    await this.listarAutor(id);
+    return this.autoresRepository.inativarAutor(id);
   }
 
   /*----------MÉTODOS USANDO ARRAY SEM DB------------------
@@ -122,11 +129,12 @@ export class AutoresService {
   }
   */
 
-  // async inativarAutor(id: number) {
-  //   try {
-  //     await this.db.update(autoresTabela).set({ ativo: false }).where(eq(autoresTabela.id, id));
-  //     return `Autor inativado com sucesso: ${id}`;
-  //   } catch (error) {
-  //     throw new InternalServerErrorException('Erro ao inativar autor.');
-  //   }
+//   async inativarAutor(id: number) {
+//     try {
+//       await this.db.update(autoresTabela).set({ ativo: false }).where(eq(autoresTabela.id, id));
+//       return `Autor inativado com sucesso: ${id}`;
+//     } catch (error) {
+//       throw new InternalServerErrorException('Erro ao inativar autor.');
+//     }
+// }
 }

@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LivrosRepository } from './livros.repository';
-import { CriarLivroDto } from './livros.dto';
+import { AtualizarLivroDto, CriarLivroDto } from './livros.dto';
 import { AutoresService } from '../autores/autores.service';
 
 @Injectable()
@@ -43,15 +43,18 @@ export class LivrosService {
     }
     return livroComAutor;
   }
-
-  // async atualizarLivro(idLivro: number, bodyRequest: AtualizarLivroDto) {
-  //   await this.listarLivro(idLivro);
-
-  //   return this.livrosRepository.atualizarLivro(idLivro, bodyRequest);
-  // }
+  async atualizarLivro(id: number, bodyRequest: AtualizarLivroDto) {
+    await this.listarLivro(id);
+    return this.livrosRepository.atualizarLivro(id, bodyRequest);
+  }
 
   async deletarLivro(idLivro: number) {
     await this.listarLivro(idLivro);
     return this.livrosRepository.deletarLivro(idLivro);
   }
+
+  // async inativarLivro(idLivro: number) {
+  //   await this.listarLivro(idLivro);
+  //   return this.livrosRepository.inativarLivro(idLivro);
+  //
 }
