@@ -30,10 +30,25 @@ export class UsuariosRepository {
       .where(eq(usuariosTabela.email, email));
       if (!usuarioEncontrado) {
         throw new NotFoundException('Usuário não encontrado.');
+
       }
-      return usuarioEncontrado;
+      return usuarioEncontrado [0] ?? null;
     } catch (error) {
       throw new NotFoundException('Usuário não encontrado.');
     }
   }
+  // async buscarUsuarioPorId(id: number) {
+  //   try {
+  //     const usuarioEncontrado = await this.db
+  //     .select()
+  //     .from(usuariosTabela)
+  //     .where(eq(usuariosTabela.id, id));
+  //     if (!usuarioEncontrado) {
+  //       throw new NotFoundException('Usuário não encontrado.');
+  //     }
+  //     return usuarioEncontrado;
+  //   } catch (error) {
+  //     throw new NotFoundException('Usuário não encontrado.');
+  //   }
+  
 }
